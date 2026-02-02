@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Akansha ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --pink: #ff4d8d;
+            --neon-pink: #ff0055;
+            --bg: #0a0a0c;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 77, 141, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(0, 217, 214, 0.1) 0%, transparent 40%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px 20px;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+
+        .heart-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--pink));
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            background: linear-gradient(to bottom, #fff, #bbb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            position: relative;
+            height: 140px; /* Space for buttons */
+        }
+
+        button {
+            width: 200px;
+            height: 55px;
+            border-radius: 15px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s active;
+        }
+
+        #yesBtn {
+            background: linear-gradient(45deg, var(--pink), var(--neon-pink));
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3);
+            z-index: 5;
+        }
+
+        #noBtn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: absolute;
+            top: 70px;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-content {
+            display: none;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="floating-hearts" id="bg-hearts"></div>
+
+    <div class="card" id="main-card">
+        <div class="heart-icon">❤️</div>
+        <h1>Akansha, will you be my Valentine?</h1>
+        <div class="btn-container">
+            <button id="yesBtn" onclick="celebrate()">Yes, I will!</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div class="card success-content" id="success-card">
+        <div class="heart-icon">💖</div>
+        <h1>I knew you'd say Yes!</h1>
+        <p style="color: #888;">Prepare for the best date ever. 🌹</p>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const mainCard = document.getElementById('main-card');
+        const successCard = document.getElementById('success-card');
+
+        // Logic to move button
+        function moveButton(e) {
+            if(e) e.preventDefault(); // Prevent accidental clicks
+            
+            // Get screen dimensions minus button size
+            const padding = 20;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+            // Generate random coordinates
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // Support both desktop and mobile
+        noBtn.addEventListener('touchstart', moveButton);
+        noBtn.addEventListener('mouseover', moveButton);
+
+        function celebrate() {
+            mainCard.style.display = 'none';
+            successCard.style.display = 'block';
+
+            // Throw confetti
+            const end = Date.now() + (3 * 1000);
+            const colors = ['#ff4d8d', '#ffffff', '#ff0055'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
